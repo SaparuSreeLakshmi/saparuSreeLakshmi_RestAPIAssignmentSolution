@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-//import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class EmployeeController {
 
 	// endpoint to add employees into DB
 	@PostMapping("/save")
-	public void saveEmployee(String firstName, String lastName, String email) {
+	public void saveEmployee(@RequestParam("firstName")String firstName, @RequestParam("lastName")String lastName, @RequestParam("email")String email) {
 
 		Employees emp = new Employees(firstName, lastName, email);
 		employeeService.save(emp);
@@ -39,14 +38,14 @@ public class EmployeeController {
 
 	// endpoint to fetch employess detail by his/her Id
 	@RequestMapping("/emp_id")
-	public Employees employeeById(int id) {
+	public Employees employeeById(@RequestParam("id")int id) {
 		Employees emp = employeeService.findById(id);
 		return emp;
 	}
 
 	// endpoint to update existing record in DB
 	@PutMapping
-	public Employees updateEmpDetails(int id, String firstName, String lastName, String email) {
+	public Employees updateEmpDetails(@RequestParam("id")int id, @RequestParam("firstName")String firstName, @RequestParam("lastName")String lastName, @RequestParam("email")String email) {
 		Employees emp = employeeService.findById(id);
 		System.out.println(emp);
 		emp.setFirstName(firstName);
@@ -58,14 +57,14 @@ public class EmployeeController {
 
 	// endpoint to employee record based on id
 	@DeleteMapping
-	public String deleteEmployee(int id) {
+	public String deleteEmployee(@RequestParam("id")int id) {
 		employeeService.deleteById(id);
 		return "deleted employee id -->" + id;
 	}
 
 	// endpoint to fetch list of all employees with given first name
 	@RequestMapping("/search_firstNmae")
-	public List<Employees> searchByFirstName(String firstName) {
+	public List<Employees> searchByFirstName(@RequestParam("firstName")String firstName) {
 		List<Employees> employees = employeeService.findByFirstName(firstName);
 		return employees;
 	}
